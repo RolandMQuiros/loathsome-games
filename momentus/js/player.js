@@ -1,20 +1,26 @@
 /* global Phaser */
 function Player(game, x, y, input) {
-    Phaser.Sprite.call(this, game, x, y, "mtus_player", 0);
-    
+    Phaser.Sprite.call(this, game, x, y, "sprTestHero", 0);
+
     // Set anchor to bottom of bounding box
-    this.anchor.x = 0.5;
-    this.anchor.y = 1;
-    
+    this.anchor.setTo(0.5, 1);
+
+    // Set up animations
+    this.animations.add("idle", [0], game.time.desiredFps, true);
+    this.animations.add("run", [1, 2, 3, 4, 5, 6, 7, 8], 16, true);
+
     // Set up physics bounding box
     game.physics.enable(this, Phaser.Physics.ARCADE);
-    this.body.setSize(12, 8, -6, -4);
-    //this.body.allowGravity = true;
-    //this.body.gravity = 1.0;
-    //this.body.collideWorldBounds = true;
-    
+    this.body.setSize(12, 8);
+    this.body.allowGravity = true;
+    this.body.collideWorldBounds = true;
+
+    this.body.gravity.y = 250;
+    this.body.maxVelocity.x = 1000;
+    this.body.maxVelocity.y = 1000;
+
     // Shortcut to keyboard input
-    this.input = input;
+    this._input = input;
 }
 
 Player.prototype = Object.create(Phaser.Sprite.prototype);
@@ -22,13 +28,39 @@ Player.prototype.constructor = Player;
 
 Player.prototype.update = function() {
     Phaser.Sprite.prototype.update.call(this);
-    
-    if (this.input.left.isDown) {
-        this.body.velocity.x = -100;
-    } else if (this.input.right.isDown) {
-        this.body.velocity.x = 100;
+
+    if (this._input.left.isDown) {
+        this.animations.play("run");
+        this.scale.x = -1;
+
+        this.body.acceleration.x = -100;
+    } else if (this._input.right.isDown) {
+        this.animations.play("run");
+        this.scale.x = 1;
+
+        this.body.acceleration.x = 100;
     } else {
+        this.animations.play("idle");
+
         this.body.velocity.x = 0;
+        this.body.acceleration.x = 0;
+    }
+
+    if (this.body.onFloor() && this._input.jump.isDown) {
+        this.body.acceleration.y = -4000;
+    } else if (!this.body.onFloor()) {
+        this.body.acceleration.y = 0;
     }
 }
 
+Player.prototype.render = function() {
+    // var rect = new Phaser.Rectangle(
+    //     this.body.x - this.body.offset.x,
+    //     this.body.y - this.body.offset.y,
+    //     this.body.width,
+    //     this.body.height
+    // );
+
+    // this.game.debug.geom(rect, "#0F0", true);
+    this.game.debug.body(this, "#FFF", false);
+}

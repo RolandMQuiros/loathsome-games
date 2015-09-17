@@ -3,7 +3,7 @@
 
 function KeyboardButtons(keyboard) {
     this.keyboard = keyboard;
-    
+
     this.left = this.keyboard.addKey(Phaser.Keyboard.A);
     this.right = this.keyboard.addKey(Phaser.Keyboard.D);
     this.jump = this.keyboard.addKey(Phaser.Keyboard.W);
