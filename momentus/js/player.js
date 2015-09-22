@@ -11,9 +11,10 @@ function Player(game, x, y, input) {
 
     // Set up physics bounding box
     game.physics.enable(this, Phaser.Physics.ARCADE);
-    this.body.setSize(12, 8);
+    this.body.setSize(24, 16);
     this.body.allowGravity = true;
     this.body.collideWorldBounds = true;
+    //this.body.syncBounds = true;
 
     this.body.gravity.y = 250;
     this.body.maxVelocity.x = 1000;
@@ -32,11 +33,13 @@ Player.prototype.update = function() {
     if (this._input.left.isDown) {
         this.animations.play("run");
         this.scale.x = -1;
+        this.facing = Phaser.LEFT;
 
         this.body.acceleration.x = -100;
     } else if (this._input.right.isDown) {
         this.animations.play("run");
         this.scale.x = 1;
+        this.facing = Phaser.RIGHT;
 
         this.body.acceleration.x = 100;
     } else {

@@ -57,6 +57,8 @@ function create() {
     // Note: scaling the camera doesn't scale the physics bodies?
     game.camera.setSize(400, 250);
     game.camera.scale.setTo(2.0, 2.0);
+    
+    //scaleLayer.scale.setTo(2.0, 2.0);
 }
 
 function update() {
@@ -73,5 +75,7 @@ function update() {
 
 function render() {
     player.render();
-    game.debug.cameraInfo(game.camera, 32, 32);
+    //game.debug.text(player.body.scale.toString(), 32, 32, "#FFF");
+    game.debug.body(layer, "#FFF", false);
+    this.game.debug.text(player.body.position.x + ", " + player.body.position.y, 32, 32, "#FFF");
 }

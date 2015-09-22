@@ -21,3 +21,7 @@ KeyboardButtons.prototype.releaseKeys = function() {
     this.keyboard.removeKey(Phaser.Keyboard.S);
     this.keyboard.removeKey(Phaser.Keyboard.G);
 }
+
+KeyboardButtons.prototype.update = function() {
+    
+}
